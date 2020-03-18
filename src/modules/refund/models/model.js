@@ -87,5 +87,13 @@ var RefundSchema = new Schema({
         }
     }
 });
-
+RefundSchema.pre("save",function(next){
+    let refund = this;
+    if(refund.isNew){
+        refund.doc_no = `rfn-yyyy-mm-xxxxxxxxxx`;
+        next();
+    }else{
+        next();
+    }
+})
 mongoose.model("Refund", RefundSchema);
