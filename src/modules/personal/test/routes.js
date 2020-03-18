@@ -16,7 +16,18 @@ describe('Personal CRUD routes tests', function () {
 
     before(function (done) {
         mockup = {
-            name: 'name'
+            personalid: 'asas',
+            contactno: 'dfdf',
+            deviceno: 'ghgh',
+            items: [
+                {
+                    refno: '232323232',
+                    refdate: '2323232',
+                    contactname: 'ddddddd',
+                    contacttype: 'ffff',
+                    amount: '1000'
+                }
+            ]
         };
         credentials = {
             username: 'username',
@@ -32,18 +43,18 @@ describe('Personal CRUD routes tests', function () {
         done();
     });
 
-    it('should be Personal get use token', (done)=>{
+    it('should be Personal get use token', (done) => {
         request(app)
-        .get('/api/personals')
-        .set('Authorization', 'Bearer ' + token)
-        .expect(200)
-        .end((err, res)=>{
-            if (err) {
-                return done(err);
-            }
-            var resp = res.body;
-            done();
-        });
+            .get('/api/personals')
+            .set('Authorization', 'Bearer ' + token)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                done();
+            });
     });
 
     it('should be Personal get by id', function (done) {
@@ -68,14 +79,21 @@ describe('Personal CRUD routes tests', function () {
                         }
                         var resp = res.body;
                         assert.equal(resp.status, 200);
-                        assert.equal(resp.data.name, mockup.name);
+                        assert.equal(resp.data.personalid, mockup.personalid);
+                        assert.equal(resp.data.contactno, mockup.contactno);
+                        assert.equal(resp.data.deviceno, mockup.deviceno);
+                        assert.equal(resp.data.items[0].refno, mockup.items[0].refno);
+                        assert.equal(resp.data.items[0].refdate, mockup.items[0].refdate);
+                        assert.equal(resp.data.items[0].contactname, mockup.items[0].contactname);
+                        assert.equal(resp.data.items[0].contacttype, mockup.items[0].contacttype);
+                        assert.equal(resp.data.items[0].amount, mockup.items[0].amount);
                         done();
                     });
             });
 
     });
 
-    it('should be Personal post use token', (done)=>{
+    it('should be Personal post use token', (done) => {
         request(app)
             .post('/api/personals')
             .set('Authorization', 'Bearer ' + token)
@@ -86,7 +104,14 @@ describe('Personal CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                assert.equal(resp.data.name, mockup.name);
+                assert.equal(resp.data.personalid, mockup.personalid);
+                assert.equal(resp.data.contactno, mockup.contactno);
+                assert.equal(resp.data.deviceno, mockup.deviceno);
+                assert.equal(resp.data.items[0].refno, mockup.items[0].refno);
+                assert.equal(resp.data.items[0].refdate, mockup.items[0].refdate);
+                assert.equal(resp.data.items[0].contactname, mockup.items[0].contactname);
+                assert.equal(resp.data.items[0].contacttype, mockup.items[0].contacttype);
+                assert.equal(resp.data.items[0].amount, mockup.items[0].amount);
                 done();
             });
     });
@@ -104,7 +129,18 @@ describe('Personal CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 var update = {
-                    name: 'name update'
+                    personalid: 'asas',
+                    contactno: 'dfdf',
+                    deviceno: 'ghgh',
+                    items: [
+                        {
+                            refno: '232323232',
+                            refdate: '2323232',
+                            contactname: 'ddddddd',
+                            contacttype: 'ffff',
+                            amount: '1000'
+                        }
+                    ]
                 }
                 request(app)
                     .put('/api/personals/' + resp.data._id)
@@ -116,7 +152,14 @@ describe('Personal CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
-                        assert.equal(resp.data.name, update.name);
+                        assert.equal(resp.data.personalid, update.personalid);
+                        assert.equal(resp.data.contactno, update.contactno);
+                        assert.equal(resp.data.deviceno, update.deviceno);
+                        assert.equal(resp.data.items[0].refno, update.items[0].refno);
+                        assert.equal(resp.data.items[0].refdate, update.items[0].refdate);
+                        assert.equal(resp.data.items[0].contactname, update.items[0].contactname);
+                        assert.equal(resp.data.items[0].contacttype, update.items[0].contacttype);
+                        assert.equal(resp.data.items[0].amount, update.items[0].amount);
                         done();
                     });
             });
@@ -144,15 +187,15 @@ describe('Personal CRUD routes tests', function () {
 
     });
 
-    it('should be personal get not use token', (done)=>{
+    it('should be personal get not use token', (done) => {
         request(app)
-        .get('/api/personals')
-        .expect(403)
-        .expect({
-            status: 403,
-            message: 'User is not authorized'
-        })
-        .end(done);
+            .get('/api/personals')
+            .expect(403)
+            .expect({
+                status: 403,
+                message: 'User is not authorized'
+            })
+            .end(done);
     });
 
     it('should be personal post not use token', function (done) {

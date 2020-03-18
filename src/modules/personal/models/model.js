@@ -5,10 +5,51 @@ var Schema = mongoose.Schema;
 
 
 var PersonalSchema = new Schema({
-    name: {
+
+
+    personalid: {
         type: String,
-        required: 'Please fill a Personal name',
+        // required: 'Please fill a Saleorder personalid',
     },
+    contactno: {
+        type: String,
+        // required: 'Please fill a Saleorder contactno',
+    },
+    deviceno: {
+        type: String,
+        // required: 'Please fill a Saleorder deviceno',
+    },
+    status: {
+        type: String,
+        default: 'pre',
+    },
+    items: {
+        type: [
+            {
+                refno: {
+                    type: String,
+                    required: 'Please fill a Refund refno',
+                },
+                refdate: {
+                    type: String,
+                    required: 'Please fill a Refund refdate',
+                },
+                contactname: {
+                    type: String,
+                    required: 'Please fill a Refund contactname',
+                },
+                contacttype: {
+                    type: String,
+                    required: 'Please fill a Refund contacttype',
+                },
+                amount: {
+                    type: String,
+                    required: 'Please fill a Refund amount',
+                },
+            }
+        ]
+    },
+
     created: {
         type: Date,
         default: Date.now
@@ -39,5 +80,10 @@ var PersonalSchema = new Schema({
         }
     }
 });
+
+// PersonalSchema.pre('save', function (next){
+//     console.log(this);
+//     next();
+// })
 
 mongoose.model("Personal", PersonalSchema);

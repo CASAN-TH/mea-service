@@ -5,10 +5,58 @@ var Schema = mongoose.Schema;
 
 
 var RefundSchema = new Schema({
-    name: {
+
+    doc_no: {
         type: String,
-        required: 'Please fill a Refund name',
+        unique: true,
     },
+    doc_date: {
+        type: Date,
+        required: 'Please fill a Saleorder doc_date',
+    },
+    personalid: {
+        type: String,
+        required: 'Please fill a Saleorder personalid',
+    },
+    contactno: {
+        type: String,
+        required: 'Please fill a Saleorder contactno',
+    },
+    deviceno: {
+        type: String,
+        required: 'Please fill a Saleorder deviceno',
+    },
+    status: {
+        type: String,
+        default: 'pre',
+    },
+    items: {
+        type: [
+            {
+                refno: {
+                    type: String,
+                    required: 'Please fill a Refund refno',
+                },
+                refdate: {
+                    type: String,
+                    required: 'Please fill a Refund refdate',
+                },
+                contactname: {
+                    type: String,
+                    required: 'Please fill a Refund contactname',
+                },
+                contacttype: {
+                    type: String,
+                    required: 'Please fill a Refund contacttype',
+                },
+                amount: {
+                    type: String,
+                    required: 'Please fill a Refund amount',
+                },
+            }
+        ]
+    },
+
     created: {
         type: Date,
         default: Date.now

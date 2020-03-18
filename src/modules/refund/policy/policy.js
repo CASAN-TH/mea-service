@@ -23,7 +23,11 @@ exports.invokeRolesPolicies = function() {
         {
           resources: "/api/refunds/:refundId",
           permissions: "*"
-        }
+        },
+        {
+          resources: "/api/checkExistData",
+          permissions: "*"
+        },
       ]
     }
   ]);

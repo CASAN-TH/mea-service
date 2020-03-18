@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
     model = require('../models/model'),
     mq = require('../../core/controllers/rabbitmq'),
     Refund = mongoose.model('Refund'),
+    Personal = mongoose.model('Personal'),
     errorHandler = require('../../core/controllers/errors.server.controller'),
     _ = require('lodash');
 
@@ -16,23 +17,23 @@ exports.getList = function (req, res) {
     }
     query.skip = size * (pageNo - 1);
     query.limit = size;
-        Refund.find({}, {}, query, function (err, datas) {
-            if (err) {
-                return res.status(400).send({
-                    status: 400,
-                    message: errorHandler.getErrorMessage(err)
-                });
-            } else {
-                res.jsonp({
-                    status: 200,
-                    data: datas
-                });
-            };
-        });
+    Refund.find({}, {}, query, function (err, datas) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            res.jsonp({
+                status: 200,
+                data: datas
+            });
+        };
+    });
 };
 
 exports.create = function (req, res) {
-    var newRefund = new Refund (req.body);
+    var newRefund = new Refund(req.body);
     newRefund.createby = req.user;
     newRefund.save(function (err, data) {
         if (err) {
@@ -116,3 +117,48 @@ exports.delete = function (req, res) {
         };
     });
 };
+exports.checkExistData = function (req, res, next) {
+    Refund.find({ personalid: req.body.personalid }, function (err, data) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+        //    console.log(data);
+            if (data.length > 0) {
+                res.jsonp({
+                    status: 200,
+                    data: data
+                });
+            } else {
+                next();
+            }
+        };
+    })
+}
+
+exports.checkPersonalData = function (req, res) {
+
+    Personal.find({}, function (err, data) {
+        if (err) {
+            return res.status(400).send({
+                status: 400,
+                message: errorHandler.getErrorMessage(err)
+            });
+        } else {
+            // console.log(data);
+            if (data.length > 0) {
+                res.jsonp({
+                    status: 200,
+                    data: data
+                });
+            } else {
+                return res.status(400).send({
+                    status: 400,
+                    message: 'data not found'
+                });
+            }
+        };
+    })
+}

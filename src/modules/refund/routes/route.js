@@ -16,6 +16,9 @@ module.exports = function (app) {
 
     app.param('refundId', controller.getByID);
 
+    app.route('/api/checkExistData').all(policy.isAllowed)
+        .post(controller.checkExistData, controller.checkPersonalData)
+
     /**
      * Message Queue
      * exchange : ชื่อเครือข่ายไปรษณีย์  เช่น casan
@@ -24,6 +27,6 @@ module.exports = function (app) {
      */
     // mq.consume('exchange', 'qname', 'keymsg', (msg)=>{
     //     console.log(JSON.parse(msg.content));
-        
+
     // });
 }

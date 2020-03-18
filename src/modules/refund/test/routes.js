@@ -16,7 +16,19 @@ describe('Refund CRUD routes tests', function () {
 
     before(function (done) {
         mockup = {
-            name: 'name'
+            doc_date: '2563-03-18',
+            personalid: 'asas',
+            contactno: 'dfdf',
+            deviceno: 'ghgh',
+            items: [
+                {
+                    refno: '232323232',
+                    refdate: '2323232',
+                    contactname: 'ddddddd',
+                    contacttype: 'ffff',
+                    amount: '1000'
+                }
+            ]
         };
         credentials = {
             username: 'username',
@@ -32,18 +44,18 @@ describe('Refund CRUD routes tests', function () {
         done();
     });
 
-    it('should be Refund get use token', (done)=>{
+    it('should be Refund get use token', (done) => {
         request(app)
-        .get('/api/refunds')
-        .set('Authorization', 'Bearer ' + token)
-        .expect(200)
-        .end((err, res)=>{
-            if (err) {
-                return done(err);
-            }
-            var resp = res.body;
-            done();
-        });
+            .get('/api/refunds')
+            .set('Authorization', 'Bearer ' + token)
+            .expect(200)
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                }
+                var resp = res.body;
+                done();
+            });
     });
 
     it('should be Refund get by id', function (done) {
@@ -68,14 +80,21 @@ describe('Refund CRUD routes tests', function () {
                         }
                         var resp = res.body;
                         assert.equal(resp.status, 200);
-                        assert.equal(resp.data.name, mockup.name);
+                        assert.equal(resp.data.personalid, mockup.personalid);
+                        assert.equal(resp.data.contactno, mockup.contactno);
+                        assert.equal(resp.data.deviceno, mockup.deviceno);
+                        assert.equal(resp.data.items[0].refno, mockup.items[0].refno);
+                        assert.equal(resp.data.items[0].refdate, mockup.items[0].refdate);
+                        assert.equal(resp.data.items[0].contactname, mockup.items[0].contactname);
+                        assert.equal(resp.data.items[0].contacttype, mockup.items[0].contacttype);
+                        assert.equal(resp.data.items[0].amount, mockup.items[0].amount);
                         done();
                     });
             });
 
     });
 
-    it('should be Refund post use token', (done)=>{
+    it('should be Refund post use token', (done) => {
         request(app)
             .post('/api/refunds')
             .set('Authorization', 'Bearer ' + token)
@@ -86,7 +105,14 @@ describe('Refund CRUD routes tests', function () {
                     return done(err);
                 }
                 var resp = res.body;
-                assert.equal(resp.data.name, mockup.name);
+                assert.equal(resp.data.personalid, mockup.personalid);
+                assert.equal(resp.data.contactno, mockup.contactno);
+                assert.equal(resp.data.deviceno, mockup.deviceno);
+                assert.equal(resp.data.items[0].refno, mockup.items[0].refno);
+                assert.equal(resp.data.items[0].refdate, mockup.items[0].refdate);
+                assert.equal(resp.data.items[0].contactname, mockup.items[0].contactname);
+                assert.equal(resp.data.items[0].contacttype, mockup.items[0].contacttype);
+                assert.equal(resp.data.items[0].amount, mockup.items[0].amount);
                 done();
             });
     });
@@ -104,7 +130,19 @@ describe('Refund CRUD routes tests', function () {
                 }
                 var resp = res.body;
                 var update = {
-                    name: 'name update'
+                    doc_date: '2563-03-18',
+                    personalid: 'asas',
+                    contactno: 'dfdf',
+                    deviceno: 'ghgh',
+                    items: [
+                        {
+                            refno: '232323232',
+                            refdate: '2323232',
+                            contactname: 'ddddddd',
+                            contacttype: 'ffff',
+                            amount: '1000'
+                        }
+                    ]
                 }
                 request(app)
                     .put('/api/refunds/' + resp.data._id)
@@ -116,7 +154,14 @@ describe('Refund CRUD routes tests', function () {
                             return done(err);
                         }
                         var resp = res.body;
-                        assert.equal(resp.data.name, update.name);
+                        assert.equal(resp.data.personalid, update.personalid);
+                        assert.equal(resp.data.contactno, update.contactno);
+                        assert.equal(resp.data.deviceno, update.deviceno);
+                        assert.equal(resp.data.items[0].refno, update.items[0].refno);
+                        assert.equal(resp.data.items[0].refdate, update.items[0].refdate);
+                        assert.equal(resp.data.items[0].contactname, update.items[0].contactname);
+                        assert.equal(resp.data.items[0].contacttype, update.items[0].contacttype);
+                        assert.equal(resp.data.items[0].amount, update.items[0].amount);
                         done();
                     });
             });
@@ -144,15 +189,15 @@ describe('Refund CRUD routes tests', function () {
 
     });
 
-    it('should be refund get not use token', (done)=>{
+    it('should be refund get not use token', (done) => {
         request(app)
-        .get('/api/refunds')
-        .expect(403)
-        .expect({
-            status: 403,
-            message: 'User is not authorized'
-        })
-        .end(done);
+            .get('/api/refunds')
+            .expect(403)
+            .expect({
+                status: 403,
+                message: 'User is not authorized'
+            })
+            .end(done);
     });
 
     it('should be refund post not use token', function (done) {
@@ -226,3 +271,89 @@ describe('Refund CRUD routes tests', function () {
     });
 
 });
+describe('refund Check Exist Data', function () {
+    before(function (done) {
+        mockup = {
+            doc_date: '2563-03-18',
+            personalid: '3180200756700',
+            contactno: 'dfdf',
+            deviceno: 'ghgh',
+            items: [
+                {
+                    refno: '232323232',
+                    refdate: '2323232',
+                    contactname: 'ddddddd',
+                    contacttype: 'ffff',
+                    amount: '1000'
+                }
+            ]
+        };
+        credentials = {
+            username: 'username',
+            password: 'password',
+            firstname: 'first name',
+            lastname: 'last name',
+            email: 'test@email.com',
+            roles: ['user']
+        };
+        token = jwt.sign(_.omit(credentials, 'password'), config.jwt.secret, {
+            expiresIn: 2 * 60 * 60 * 1000
+        });
+        done();
+    });
+
+    it('Check Not Exist Data', function (done) {
+        request(app)
+            .post('/api/checkExistData')
+            .set('Authorization', 'Bearer ' + token)
+            .send({
+                personalid: '3180200756700'
+            })
+            .expect(400)
+            .end(done);
+    })
+
+    it('Check Exist Data in Refund', function (done) {
+        let refund = new Refund(mockup);
+        refund.save();
+        request(app)
+            .post('/api/checkExistData')
+            .set('Authorization', 'Bearer ' + token)
+            .send({
+                personalid: '3180200756700'
+            })
+            .expect(200)
+            .end(done);
+    })
+
+
+    it('Check Exist Data in Personal', function (done) {
+        let personal = new Personal({
+            personalid: '3180200756700',
+            contactno: 'dfdf',
+            deviceno: 'ghgh',
+            items: [
+                {
+                    refno: '232323232',
+                    refdate: '2323232',
+                    contactname: 'ddddddd',
+                    contacttype: 'ffff',
+                    amount: '1000'
+                }
+            ]
+        });
+        personal.save();
+        request(app)
+            .post('/api/checkExistData')
+            .set('Authorization', 'Bearer ' + token)
+            .send({
+                personalid: '3180200756700'
+            })
+            .expect(200)
+            .end(done);
+    })
+
+    // afterEach(function (done) {
+    //     Personal.deleteMany().exec(done);
+    // });
+})
